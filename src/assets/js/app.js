@@ -42,7 +42,19 @@ var UIController = (function () {
 })();
 
 var PanelCotroller = (function () {
+  var AddGroupPanel = function (id, value, items) {
+    this.id = id;
+    this.nameGroup = value;
+    this.items= items;
+  }
   return {
+    addItemsObj: function(data, index, val){
+      var newPanelGroup, index, items;
+      index = 0
+      items= []
+      newPanelGroup = new  AddGroupPanel(index, val, items)
+      data.panels.push(newPanelGroup)
+    },
     loadContent: function (parent, arr) {
       arr.forEach(function (item) {
         UIController.addBoardPanelLink(parent,item)
@@ -85,7 +97,7 @@ var AppController = (function (UICtrl,PanCtrl, TodoCtrl, StorCtrl) {
     value = blockInput.querySelector('input').value
     ul = UICtrl.$qs(DOM.ulLinks)
     UIController.addBoardPanelLink(ul, value)
-    data.panels.push(value)
+    PanelCotroller.addItemsObj(data,0,value)
   }
   DOM = UICtrl.getDomStrings();
   var setupEvents = function () {
