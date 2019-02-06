@@ -17,12 +17,12 @@ var UIController = (function () {
       elem.classList.add('d-none')
       elem.parentNode.querySelector(DOMStrings.inputAddPanel).classList.remove('d-none')
     },
-    addBoardPanelLink:function (htmlElemContair, value) {
+    addBoardPanelLink:function (htmlElemContair, value,index) {
       var html, val;
       val = value;
       html = `<li class="nav-item">
                 <span class="nav-link active">
-                  <a href="#">${val}</a>
+                  <a href="#" data-target="${index}">${val}</a>
                   <span class="float-right">
                     <span class="badge badge-secondary mr-3">0/0</span>
                     <i class="fas fa-plus mr-2"></i>
@@ -57,7 +57,8 @@ var PanelCotroller = (function () {
     },
     loadContent: function (parent, arr) {
       arr.forEach(function (item) {
-        UIController.addBoardPanelLink(parent,item)
+        UIController.addBoardPanelLink(parent,item.nameGroup,item.id)
+        TodoController.createTitlePanel(item.id,item.nameGroup)
       })
     }
   }
@@ -67,6 +68,19 @@ var PanelCotroller = (function () {
 
 var TodoController = (function () {
 
+return {
+  createTitlePanel: function (index, value) {
+    var html;
+    html = `<div class="contentPanel" data-index="${index}">
+              <h6 class="mt-3">
+                <span class="display-4">${value}</span>
+                
+              </h6>
+              <hr>
+            </div>`
+    document.querySelector('.js-container').insertAdjacentHTML('beforeend', html)
+  }
+}
 
 })();
 
@@ -96,8 +110,9 @@ var AppController = (function (UICtrl,PanCtrl, TodoCtrl, StorCtrl) {
     blockInput = UIController.$qs(`${DOM.inputAddPanel}`);
     value = blockInput.querySelector('input').value
     ul = UICtrl.$qs(DOM.ulLinks)
-    UIController.addBoardPanelLink(ul, value)
+    UIController.addBoardPanelLink(ul, value,0)
     PanelCotroller.addItemsObj(data,0,value)
+    TodoController.createTitlePanel(0, value)
   }
   DOM = UICtrl.getDomStrings();
   var setupEvents = function () {
@@ -112,6 +127,7 @@ var AppController = (function (UICtrl,PanCtrl, TodoCtrl, StorCtrl) {
     inputGbtn.addEventListener('click', function () {
       addInputBtnEvent(data)
       StorCtrl.addToStor()
+
     })
 
 
