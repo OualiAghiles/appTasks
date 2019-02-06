@@ -1,0 +1,69 @@
+.col-2
+  .card.rounded-0.h-100
+    ul.nav.flex-column
+      li.nav-item
+      .nav-link Todos Controller
+        button.btn.btn-sm.btn-outline-info.float-right
+          i.fas.fa-list-ul.mr-2
+          span Group
+        .input-group
+          input.form-control(type='text', placeholder="New group", aria-label="Recipient's username", aria-describedby='button-addon2')
+          .input-group-append
+            button#button-addon2.btn.btn-outline-secondary(type='button')
+              i.fas.fa-plus
+
+      li.nav-item
+        span.nav-link.active
+          a(href='#') Personal
+          span.float-right
+            span.badge.badge-secondary.mr-3 17/44
+            span.badge.badge-success.mr-1 50%
+            span.badge.badge-warning.mr-1 35%
+            span.badge.badge-danger.mr-3 15%
+            i.fas.fa-plus.mr-2
+        hr.m-0
+        ul.nav.flex-column.ml-3
+          li.nav-item
+            .nav-link
+              .input-group
+                input.form-control(type='text', placeholder="New panel Name", aria-label="Recipient's username", aria-describedby='button-addon2')
+                .input-group-append
+                  button#button-addon3.btn.btn-outline-secondary(type='button')
+                    i.fas.fa-plus
+          hr.m-0
+          li.nav-item
+            span.nav-link.active
+              a(href='#') Panel title 1
+              span.float-right
+                span.badge.badge-secondary.mr-3 12/24
+                span.badge.badge-success.mr-1 50%
+            hr.m-0
+          li.nav-item
+            span.nav-link.active
+              a(href='#') Panel title 2
+              span.float-right
+                span.badge.badge-secondary.mr-3 4/12
+                span.badge.badge-warning.mr-1 35%
+            hr.m-0
+          li.nav-item
+            span.nav-link.active
+              a(href='#') Panel title 1
+              span.float-right
+                span.badge.badge-secondary.mr-3 1/8
+                span.badge.badge-danger.mr-1 15%
+
+
+      hr.m-0
+      li.nav-item
+        .nav-link(href='#', tabindex='-1', aria-disabled='true') Budget Controller
+          button.btn.btn-sm.btn-outline-info.float-right
+            i.fas.fa-plus.mr-2
+            span Budget
+        ul.nav.flex-column
+          li
+            hr.m-0
+          li.nav-item
+            a.nav-link(href='#') Personal
+          li
+            hr.m-0
+
