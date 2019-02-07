@@ -103,14 +103,14 @@ gulp.src(['src/assets/sass/**/*.sass','src/assets/sass/**/*.scss'])
 //      js
 //-----------------------------------------------------------
 gulp.task('scripts', function(){
-return gulp.src('src/assets/js/**/*.js')
+return gulp.src(['src/assets/js/plugins/todos.js','src/assets/js/plugins/app.js','src/assets/js/test.js'])
 .pipe(plumber({
   errorHandler: function (error) {
     console.log(error.message);
     this.emit('end');
 }}))
 .pipe(gulp.dest('dist/assets/scripts/'))
-.pipe(concat('main.js'))
+.pipe(concat('bundle.js'))
 .pipe(gulp.dest('dist/assets/scripts/'))
 .pipe(rename({suffix: '.min'}))
 .pipe(uglify())

@@ -35,6 +35,20 @@ var UIController = (function () {
               </li>`;
       htmlElemContair.insertAdjacentHTML('beforeend', html)
     },
+    addBtnLinkPanel: function(index, value) {
+      var link, html;
+      link = UIController.$qs(`${DOMStrings.ulLinks} [data-target="${index}"]`);
+      html = `<hr class="m-0" />
+              <li class="nav-item">
+                <span class="nav-link active">
+                    <a href="#">${value}</a>
+                  <span class="float-right">
+                    <span class="badge badge-secondary mr-3">0/0</span>
+                  </span>
+                </span>
+              </li>`
+      link.parentNode.parentNode.insertAdjacentHTML("beforeend", html)
+    },
     getDomStrings: function () {
       return(DOMStrings)
     }
@@ -45,28 +59,22 @@ var UIController = (function () {
 })();
 
 var PanelCotroller = (function () {
-  var AddGroupPanel = function (id, value, items, visibility) {
+  var AddGroupPanel = function (id, value, items) {
     this.id = id;
     this.nameGroup = value;
     this.items= items;
-    this.visibility = visibility
   }
   return {
     hideAllPanls: function(data, arr){
       arr.forEach(function (item) {
         item.classList.remove('active')
       })
-      data.panels.forEach(function(item){
-        item.visibility = false 
-      })
-      console.log(data)
 
     },
-    addItemsObj: function(data, index, val,  visibility){
-      var newPanelGroup, index, items, visibility;
-      items= [],
-      visibility = true
-      newPanelGroup = new  AddGroupPanel(index, val, items, visibility)
+    addItemsObj: function(data, index, val){
+      var newPanelGroup, index, items;
+      items= [];
+      newPanelGroup = new  AddGroupPanel(index, val, items)
       data.panels.push(newPanelGroup)
     },
     loadContent: function (parent, arr) {
@@ -80,24 +88,7 @@ var PanelCotroller = (function () {
 
 })();
 
-var TodoController = (function () {
 
-return {
-  createTitlePanel: function (index, value, visibility) {
-    visibility = true
-    var html;
-    html = `<div class="contentPanel active" data-index="${index}">
-              <h6 class="mt-3">
-                <span class="display-4">${value}</span>
-                
-              </h6>
-              <hr>
-            </div>`
-    document.querySelector('.js-container').insertAdjacentHTML('beforeend', html)
-  }
-}
-
-})();
 
 var StoreController = (function () {
   var data;
@@ -117,7 +108,7 @@ var StoreController = (function () {
   }
 })()
 
-var AppController = (function (UICtrl,PanCtrl, TodoCtrl, StorCtrl) {
+var AppController = (function (UICtrl,PanCtrl, StorCtrl,TodoCtlr) {
   var DOM;
   var data = StorCtrl.data;
   var addInputBtnEvent = function (data) {
@@ -130,10 +121,10 @@ var AppController = (function (UICtrl,PanCtrl, TodoCtrl, StorCtrl) {
     } else {
       index = 0
     }
-    
+
     UIController.addBoardPanelLink(ul, value,index)
-    PanelCotroller.addItemsObj(data,index,value, true)
-    TodoController.createTitlePanel(index, value)
+    PanelCotroller.addItemsObj(data,index,value, )
+    TodoCtlr.createTitlePanel(index, value)
     blockInput.querySelector('input').value = ""
     StorCtrl.addToStor()
 
@@ -145,26 +136,22 @@ var AppController = (function (UICtrl,PanCtrl, TodoCtrl, StorCtrl) {
     addGroupEvent =  DOM.ulLinks;
     UICtrl.$qs(addGroupEvent).addEventListener('click', function (e) {
       e.preventDefault()
-      
+
       if(e.target.classList.contains('add_group--panel')){
-        UICtrl.showInput(DOM.btnAddPanel);      
+        UICtrl.showInput(DOM.btnAddPanel);
       }else if(e.target.dataset.panel ===`${DOM.inputAddPanelBtn}`){
         var value = document.querySelector(`${DOM.inputAddPanel} input`).value
         if(value){
-          console.log(value)
           addInputBtnEvent(data)
-          PanelCotroller.hideAllPanls(data, document.querySelectorAll('.contentPanel'))
+          PanCtrl.hideAllPanls(data, document.querySelectorAll('.contentPanel'))
 
         }
-        
+
       }else if (e.target.dataset.target) {
         var target = e.target.dataset.target
-        console.log('hi')
-
         if(document.querySelector(`[data-index="${target}"]`)) {
-          PanelCotroller.hideAllPanls(data, document.querySelectorAll('.contentPanel'))
+          PanCtrl.hideAllPanls(data, document.querySelectorAll('.contentPanel'))
           document.querySelector(`[data-index="${target}"]`).classList.add('active')
-          data.panels[`${target}`].visibility = !data.panels[`${target}`].visibility
           StorCtrl.addToStor()
 
         }
@@ -175,7 +162,7 @@ var AppController = (function (UICtrl,PanCtrl, TodoCtrl, StorCtrl) {
     if (!inputGbtn.classList.contains('d-none')) {
       inputGbtn.addEventListener('keypress',function (e) {
         if (e.code === 'Enter') {
-          
+
         addInputBtnEvent(data)
           StorCtrl.addToStor()
         }
@@ -185,12 +172,11 @@ var AppController = (function (UICtrl,PanCtrl, TodoCtrl, StorCtrl) {
   return {
     init: function () {
 
-      console.log(data)
       setupEvents()
       PanelCotroller.loadContent( UICtrl.$qs(DOM.ulLinks),data.panels)
     }
   }
 
 
-})(UIController, PanelCotroller, TodoController, StoreController);
-AppController.init();
+})(UIController, PanelCotroller, StoreController, TodoController);
+
