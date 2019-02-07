@@ -12,10 +12,13 @@ var UIController = (function () {
     },
 
     showInput: function (eventBtn) {
-      var elem;
+      var elem, input;
       elem = UIController.$qs(eventBtn).parentNode;
       elem.classList.add('d-none')
-      elem.parentNode.querySelector(DOMStrings.inputAddPanel).classList.remove('d-none')
+      input = elem.parentNode.querySelector(DOMStrings.inputAddPanel)
+      input.classList.remove('d-none')
+      input.querySelector('input').focus()
+
     },
     addBoardPanelLink:function (htmlElemContair, value,index) {
       var html, val;
@@ -42,17 +45,28 @@ var UIController = (function () {
 })();
 
 var PanelCotroller = (function () {
-  var AddGroupPanel = function (id, value, items) {
+  var AddGroupPanel = function (id, value, items, visibility) {
     this.id = id;
     this.nameGroup = value;
     this.items= items;
+    this.visibility = visibility
   }
   return {
-    addItemsObj: function(data, index, val){
-      var newPanelGroup, index, items;
-      index = 0
-      items= []
-      newPanelGroup = new  AddGroupPanel(index, val, items)
+    hideAllPanls: function(data, arr){
+      arr.forEach(function (item) {
+        item.classList.remove('active')
+      })
+      data.panels.forEach(function(item){
+        item.visibility = false 
+      })
+      console.log(data)
+
+    },
+    addItemsObj: function(data, index, val,  visibility){
+      var newPanelGroup, index, items, visibility;
+      items= [],
+      visibility = true
+      newPanelGroup = new  AddGroupPanel(index, val, items, visibility)
       data.panels.push(newPanelGroup)
     },
     loadContent: function (parent, arr) {
@@ -69,9 +83,10 @@ var PanelCotroller = (function () {
 var TodoController = (function () {
 
 return {
-  createTitlePanel: function (index, value) {
+  createTitlePanel: function (index, value, visibility) {
+    visibility = true
     var html;
-    html = `<div class="contentPanel" data-index="${index}">
+    html = `<div class="contentPanel active" data-index="${index}">
               <h6 class="mt-3">
                 <span class="display-4">${value}</span>
                 
@@ -106,31 +121,66 @@ var AppController = (function (UICtrl,PanCtrl, TodoCtrl, StorCtrl) {
   var DOM;
   var data = StorCtrl.data;
   var addInputBtnEvent = function (data) {
-    var value, blockInput, ul;
+    var value, blockInput, ul, index;
     blockInput = UIController.$qs(`${DOM.inputAddPanel}`);
     value = blockInput.querySelector('input').value
     ul = UICtrl.$qs(DOM.ulLinks)
-    UIController.addBoardPanelLink(ul, value,0)
-    PanelCotroller.addItemsObj(data,0,value)
-    TodoController.createTitlePanel(0, value)
+    if(data.panels.length > 0) {
+      index = data.panels.length + 1
+    } else {
+      index = 0
+    }
+    
+    UIController.addBoardPanelLink(ul, value,index)
+    PanelCotroller.addItemsObj(data,index,value, true)
+    TodoController.createTitlePanel(index, value)
+    blockInput.querySelector('input').value = ""
+    StorCtrl.addToStor()
+
   }
   DOM = UICtrl.getDomStrings();
   var setupEvents = function () {
 
     var addGroup, inputGbtn;
-    addGroup =  DOM.btnAddPanel;
-    UICtrl.$qs(addGroup).addEventListener('click', function () {
-      UICtrl.showInput(addGroup);
+    addGroupEvent =  DOM.ulLinks;
+    UICtrl.$qs(addGroupEvent).addEventListener('click', function (e) {
+      e.preventDefault()
+      
+      if(e.target.classList.contains('add_group--panel')){
+        UICtrl.showInput(DOM.btnAddPanel);      
+      }else if(e.target.dataset.panel ===`${DOM.inputAddPanelBtn}`){
+        var value = document.querySelector(`${DOM.inputAddPanel} input`).value
+        if(value){
+          console.log(value)
+          addInputBtnEvent(data)
+          PanelCotroller.hideAllPanls(data, document.querySelectorAll('.contentPanel'))
+
+        }
+        
+      }else if (e.target.dataset.target) {
+        var target = e.target.dataset.target
+        console.log('hi')
+
+        if(document.querySelector(`[data-index="${target}"]`)) {
+          PanelCotroller.hideAllPanls(data, document.querySelectorAll('.contentPanel'))
+          document.querySelector(`[data-index="${target}"]`).classList.add('active')
+          data.panels[`${target}`].visibility = !data.panels[`${target}`].visibility
+          StorCtrl.addToStor()
+
+        }
+      }
+     // UICtrl.showInput(addGroup);
     });
-    inputGbtn = UICtrl.$qs(`[data-panel ="${DOM.inputAddPanelBtn}"]`);
-    console.log(inputGbtn);
-    inputGbtn.addEventListener('click', function () {
-      addInputBtnEvent(data)
-      StorCtrl.addToStor()
-
-    })
-
-
+    inputGbtn = document.querySelector(`${DOM.inputAddPanel} input`)
+    if (!inputGbtn.classList.contains('d-none')) {
+      inputGbtn.addEventListener('keypress',function (e) {
+        if (e.code === 'Enter') {
+          
+        addInputBtnEvent(data)
+          StorCtrl.addToStor()
+        }
+      })
+    }
   }
   return {
     init: function () {
