@@ -20,95 +20,13 @@ var UIController = (function () {
       input.querySelector('input').focus()
 
     },
-    addBoardPanelLink:function (htmlElemContair, value,index) {
-      var html, val;
-      val = value;
-      html = `<li class="nav-item">
-                <span class="nav-link active">
-                  <a href="#" data-target="${index}">${val}</a>
-                  <span class="float-right">
-                    <span class="badge badge-secondary mr-3">0/0</span>
-                    <i class="fas fa-plus mr-2"></i>
-                  </span>
-                </span>
-                <hr class="m-0" />
-              </li>`;
-      htmlElemContair.insertAdjacentHTML('beforeend', html)
-    },
-    addBtnLinkPanel: function(index, value) {
-      var link, html;
-      link = UIController.$qs(`${DOMStrings.ulLinks} [data-target="${index}"]`);
-      html = `<hr class="m-0" />
-              <li class="nav-item">
-                <span class="nav-link active">
-                    <a href="#">${value}</a>
-                  <span class="float-right">
-                    <span class="badge badge-secondary mr-3">0/0</span>
-                  </span>
-                </span>
-              </li>`
-      link.parentNode.parentNode.insertAdjacentHTML("beforeend", html)
-    },
     getDomStrings: function () {
       return(DOMStrings)
     }
-
   }
-
-
 })();
 
-var PanelCotroller = (function () {
-  var AddGroupPanel = function (id, value, items) {
-    this.id = id;
-    this.nameGroup = value;
-    this.items= items;
-  }
-  return {
-    hideAllPanls: function(data, arr){
-      arr.forEach(function (item) {
-        item.classList.remove('active')
-      })
-
-    },
-    addItemsObj: function(data, index, val){
-      var newPanelGroup, index, items;
-      items= [];
-      newPanelGroup = new  AddGroupPanel(index, val, items)
-      data.panels.push(newPanelGroup)
-    },
-    loadContent: function (parent, arr) {
-      arr.forEach(function (item) {
-        UIController.addBoardPanelLink(parent,item.nameGroup,item.id)
-        TodoController.createTitlePanel(item.id,item.nameGroup)
-      })
-    }
-  }
-
-
-})();
-
-
-
-var StoreController = (function () {
-  var data;
-  if(localStorage.getItem("data") === null ){
-    data = {
-      panels: [],
-    }
-  } else {
-    data = JSON.parse(localStorage.getItem('data'))
-  }
-  return {
-
-    addToStor: function () {
-      window.localStorage.setItem('data', JSON.stringify(data))
-    },
-    data
-  }
-})()
-
-var AppController = (function (UICtrl,PanCtrl, StorCtrl,TodoCtlr) {
+var AppController = (function (UICtrl,PanCtrl, StorCtrl,TodoCtlr, UIPanelCtrl) {
   var DOM;
   var data = StorCtrl.data;
   var addInputBtnEvent = function (data) {
@@ -121,13 +39,11 @@ var AppController = (function (UICtrl,PanCtrl, StorCtrl,TodoCtlr) {
     } else {
       index = 0
     }
-
-    UIController.addBoardPanelLink(ul, value,index)
-    PanelCotroller.addItemsObj(data,index,value, )
-    TodoCtlr.createTitlePanel(index, value)
+    UIPanelCtrl.addBoardPanelLink(ul, value,index)
+    PanCtrl.addItemsObj(data,index,value, )
+    TodoCtlr.createTitlePanel(data, index, value)
     blockInput.querySelector('input').value = ""
     StorCtrl.addToStor()
-
   }
   DOM = UICtrl.getDomStrings();
   var setupEvents = function () {
@@ -162,8 +78,7 @@ var AppController = (function (UICtrl,PanCtrl, StorCtrl,TodoCtlr) {
     if (!inputGbtn.classList.contains('d-none')) {
       inputGbtn.addEventListener('keypress',function (e) {
         if (e.code === 'Enter') {
-
-        addInputBtnEvent(data)
+          addInputBtnEvent(data)
           StorCtrl.addToStor()
         }
       })
@@ -173,10 +88,11 @@ var AppController = (function (UICtrl,PanCtrl, StorCtrl,TodoCtlr) {
     init: function () {
 
       setupEvents()
-      PanelCotroller.loadContent( UICtrl.$qs(DOM.ulLinks),data.panels)
+      PanelCotroller.loadContent(data, UICtrl.$qs(DOM.ulLinks),data.panels)
+      PanelCotroller.loadCards(data, UICtrl.$qs('.tasks'),data.panels)
     }
   }
 
 
-})(UIController, PanelCotroller, StoreController, TodoController);
+})(UIController, PanelCotroller, StoreController, TodoController, UIPanelCotroller);
 
