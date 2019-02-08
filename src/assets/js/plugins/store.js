@@ -15,3 +15,4 @@ var StoreController = (function () {
     data
   }
 })();
+

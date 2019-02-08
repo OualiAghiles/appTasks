@@ -18,20 +18,23 @@
  *
  **/
 
-var MyClass = (function () {
-  var pabel = function (index, name) {
-    this.index = index
-    this.name = name
-  }
+var PanelController = (function () {
+  var AddGroupPanel = function (id, value, items) {
+    this.id = id;
+    this.nameGroup = value;
+    this.items= items;
+  };
 
-  var test2 =function () {
-      return {}
-    }
+  
 
   // public
   return {
-strictSSL:function () {
-  }
+    addGroupPanelObj: function(data, index, val){
+      var newPanelGroup, index, items;
+      items= [];
+      newPanelGroup = new  AddGroupPanel(index, val, items)
+      data.panels.push(newPanelGroup)
+    },
 }
 })()
 
