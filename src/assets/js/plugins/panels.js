@@ -61,7 +61,26 @@ var UIPanelCotroller = (function () {
     return UIController.getDomStrings()
   };
   return {
+    createPanelBoard: function () {
+      var html;
+      html = `<div class="contentPanel active">
+                 <div class="input-group input-group-lg addTask">
+                    <input type="text" class="form-control" placeholder="add First list" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                  </div>
+                <hr>
+                <div class="tasks">
+                 
+                  <div class="task">
+                    <div class="card-columns">
+                    </div>
+                  </div>
+              </div>`
+      document.querySelector('.js-container').insertAdjacentHTML('beforeend', html);
 
+      //addInputBtnEvent(data)
+      //TodoController.capture(data, inputLabel)
+
+    },
     addBoardPanelLink:function (htmlElemContair, value,index) {
       var html, val;
       val = value;

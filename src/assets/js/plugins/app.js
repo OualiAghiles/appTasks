@@ -3,7 +3,7 @@ var UIController = (function () {
   var DOMStrings = {
     ulLinks: '.js-menu',
     btnAddPanel: '.add_group--panel',
-    inputAddPanel: '.input_panel',
+    inputAddPanel: '.addTask',
     inputAddPanelBtn: 'add-G-panel'
   };
   return {
@@ -11,13 +11,13 @@ var UIController = (function () {
       return document.querySelector(selector)
     },
 
-    showInput: function (eventBtn) {
-      var elem, input;
-      elem = UIController.$qs(eventBtn).parentNode;
-      elem.classList.add('d-none')
-      input = elem.parentNode.querySelector(DOMStrings.inputAddPanel)
-      input.classList.remove('d-none')
-      input.querySelector('input').focus()
+    createPanelBoard: function () {
+      var container = document.querySelector('.js-container');
+      console.log(container)
+      var inputLabel = container.querySelector('.addTask input');
+      inputLabel.focus()
+
+
 
     },
     getDomStrings: function () {
@@ -42,8 +42,8 @@ var AppController = (function (UICtrl,PanCtrl, StorCtrl,TodoCtlr, UIPanelCtrl) {
     UIPanelCtrl.addBoardPanelLink(ul, value,index)
     PanCtrl.addItemsObj(data,index,value, )
     TodoCtlr.createTitlePanel(data, index, value)
-    blockInput.querySelector('input').value = ""
-    StorCtrl.addToStor()
+    //blockInput.querySelector('input').value = ""
+    //StorCtrl.addToStor()
   }
   DOM = UICtrl.getDomStrings();
   var setupEvents = function () {
@@ -54,7 +54,10 @@ var AppController = (function (UICtrl,PanCtrl, StorCtrl,TodoCtlr, UIPanelCtrl) {
       e.preventDefault()
 
       if(e.target.classList.contains('add_group--panel')){
-        UICtrl.showInput(DOM.btnAddPanel);
+        UIPanelCtrl.createPanelBoard()
+        UICtrl.createPanelBoard()
+        addInputBtnEvent(data)
+        //UICtrl.createPanelBoard(DOM.btnAddPanel);
       }else if(e.target.dataset.panel ===`${DOM.inputAddPanelBtn}`){
         var value = document.querySelector(`${DOM.inputAddPanel} input`).value
         if(value){
@@ -72,7 +75,7 @@ var AppController = (function (UICtrl,PanCtrl, StorCtrl,TodoCtlr, UIPanelCtrl) {
 
         }
       }
-     // UICtrl.showInput(addGroup);
+     // UICtrl.createPanelBoard(addGroup);
     });
     inputGbtn = document.querySelector(`${DOM.inputAddPanel} input`)
     if (!inputGbtn.classList.contains('d-none')) {
