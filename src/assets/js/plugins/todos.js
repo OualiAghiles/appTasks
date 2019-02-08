@@ -56,7 +56,6 @@ var TodoController = (function () {
       btnAddList = container.querySelector('.addList')
       btnAddList.classList.remove('d-none')
       UIPanelCotroller.addBtnLinkPanel(index, value)
-      console.log('data', data)
       if (data.panels[index].items.length > 0) {
         id = data.panels[index].items[data.panels[index].items.length - 1].panelID + 1
       } else {

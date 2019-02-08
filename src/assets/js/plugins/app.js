@@ -35,7 +35,7 @@ var AppController = (function (UICtrl,PanCtrl, StorCtrl,TodoCtlr, UIPanelCtrl) {
     value = blockInput.querySelector('input').value
     ul = UICtrl.$qs(DOM.ulLinks)
     if(data.panels.length > 0) {
-      index = data.panels.length + 1
+      index = data.panels[data.panels.length - 1].id + 1
     } else {
       index = 0
     }
