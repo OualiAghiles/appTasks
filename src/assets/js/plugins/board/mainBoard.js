@@ -89,9 +89,15 @@ var MainBoardController = (function () {
         })
       },
     loadContent: function (data) {
-      var boards = data.panels
-      PanelController.createTitlePanel(boards[0].id, boards[0].nameGroup)
-      UIControler.addInputBtnEvent(boards[0].nameGroup, boards[0].id)
+      var boards = data.panels[0]
+      PanelController.createTitlePanel(boards.id, boards.nameGroup)
+      UIControler.addInputBtnEvent(boards.nameGroup, boards.id)
+      if (boards.boards.length > 0 ){
+        var parent = document.querySelector('[data-child="0"]');
+        boards.boards.forEach(function (item) {
+          UICards.addCard(parent, item.boardName)
+        })
+      }
     }
 
   }
