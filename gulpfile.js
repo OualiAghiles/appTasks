@@ -103,7 +103,7 @@ gulp.src(['src/assets/sass/**/*.sass','src/assets/sass/**/*.scss'])
 //      js
 //-----------------------------------------------------------
 gulp.task('scripts', function(){
-return gulp.src([ 'src/assets/js/plugins/store.js','src/assets/js/plugins/board/*.js',  'src/assets/js/plugins/app.js','src/assets/js/test.js'])
+return gulp.src([ 'src/assets/js/plugins/store.js','src/assets/js/plugins/board/mainPanel.js','src/assets/js/plugins/board/mainBoard.js',  'src/assets/js/plugins/app.js','src/assets/js/test.js'])
 .pipe(plumber({
   errorHandler: function (error) {
     console.log(error.message);
