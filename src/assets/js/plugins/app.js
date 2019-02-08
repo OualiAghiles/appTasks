@@ -108,15 +108,40 @@ var UIControler = (function() {
       inputAddPanelBtn: 'add-G-panel',
       board: '.js-container'
     };
+  var $qs= function (selector) {
+    return document.querySelector(selector)
+  };
     return {
-      $qs: function (selector) {
-        return document.querySelector(selector)
+
+      addBoardPanelLink:function (htmlElemContair, value,index) {
+        var html, val;
+        val = value;
+        html = `<li class="nav-item">
+                <span class="nav-link active">
+                  <a href="#" data-target="${index}">${val}</a>
+                  <span class="float-right">
+                    <span class="badge badge-secondary mr-3">0/0</span>
+                    <i class="fas fa-plus mr-2"></i>
+                  </span>
+                </span>
+                <hr class="m-0" />
+              </li>`;
+        htmlElemContair.insertAdjacentHTML('beforeend', html)
       },
-      getDomStrings: function () {
-        return(DOMStrings)
-      }
+     addInputBtnEvent: function (value , index) {
+        var val, blockInput, ul;
+        val =value
+        ul = $qs(DOMStrings.ulLinks)
+       UIControler.addBoardPanelLink(ul, val ,index)
+      },
+    getDomStrings: function () {
+      return(DOMStrings)
+    },
+    testtingData: function () {
+      console.log(data)
     }
-    
+    }
+
 }());
 
 /**
@@ -130,14 +155,18 @@ var AppController = (function(StorData, UIControler, UIBoardController, MainBoar
   DOM = UIControler.getDomStrings();
   data = StorData.data;
   if (data.panels.length === 0) {
-    UIBoardController.initBoard(DOM.board)
+    UIBoardController.initBoard(DOM.board, true)
     MainBoardController.handleInputAddBoard()
+    MainBoardController.handleInputAddTasks(data)
+  }  else {
+    MainBoardController.loadContent(data)
+    MainBoardController.handleInputAddTasks(data)
   }
 
   return {
       init: function () {
           data
-          console.log(data.panels.length);    
+          console.log(data.panels.length);
       }
   };
 
