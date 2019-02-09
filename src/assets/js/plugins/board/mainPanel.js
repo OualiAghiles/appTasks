@@ -24,10 +24,11 @@ var PanelController = (function () {
     this.nameGroup = value;
     this.boards = boards;
   };
-  var board = function (id, boardName, panelLists) {
+  var board = function (id, boardName, panelLists, description) {
     this.id = id;
     this.boardName = boardName;
     this.panelLists = panelLists;
+    this.description = description
   }
 
 
@@ -41,9 +42,10 @@ var PanelController = (function () {
       data.panels.push(newPanelGroup)
     },
     addNewPanel: function(data,index, id, val, list) {
-      var newPanel,  list;
+      var newPanel,  list, description;
       list= [];
-      newPanel = new  board(id, val, list)
+      description = ""
+      newPanel = new  board(id, val, list, description)
 
       data.panels[index].boards.push(newPanel)
       StoreController.addToStor()
