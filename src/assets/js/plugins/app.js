@@ -128,6 +128,26 @@ var UIControler = (function() {
               </li>`;
         htmlElemContair.insertAdjacentHTML('beforeend', html)
       },
+      addSubLinks: function (index, value, id) {
+        var ul = document.querySelector(`${DOMStrings.ulLinks}`);
+        var boardLinks = ul.querySelector(`[data-target="${index}"]`);
+        var li = boardLinks.parentNode.parentNode;
+        console.log('li', typeof li)
+
+        var ulSub = li.querySelector('ul')
+        console.log('ulSub', ulSub)
+
+        if (ulSub == null) {
+          li.insertAdjacentHTML('beforeend','<ul class="list-group list-group-flush"></ul>');
+          console.log('ulSub', ulSub)
+        }
+        console.log('ulSub', ulSub)
+
+        html= `<li class="list-group-item" data-tasks="${id}">${value}</li>`;
+        ulSub.insertAdjacentHTML('beforeend', html)
+         
+        
+      },
      addInputBtnEvent: function (value , index) {
         var val, blockInput, ul;
         val =value

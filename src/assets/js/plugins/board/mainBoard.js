@@ -83,6 +83,8 @@ var MainBoardController = (function () {
             console.log(parent)
             UICards.addCard(parent, value)
             PanelController.addNewPanel(data, i, index,value, [])
+            UIControler.addSubLinks(0, item.boardName, item.id)
+
             //UIControler.addInputBtnEvent(value, index)
             //StoreController.addToStor();
           }
@@ -95,7 +97,8 @@ var MainBoardController = (function () {
       if (boards.boards.length > 0 ){
         var parent = document.querySelector('[data-child="0"]');
         boards.boards.forEach(function (item) {
-          UICards.addCard(parent, item.boardName)
+          UICards.addCard(parent, item.boardName);
+          UIControler.addSubLinks(0, item.boardName, item.id)
         })
       }
     }
