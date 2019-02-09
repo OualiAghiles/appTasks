@@ -60,6 +60,7 @@ var MainBoardController = (function () {
               PanelController.addGroupPanelObj(data, index, value)
               UIControler.addInputBtnEvent(value, index)
               MainBoardController.handleInputAddTasks(data)
+              //MainBoardController.handleCards(data)
               StoreController.addToStor();
             }
           })
@@ -71,8 +72,9 @@ var MainBoardController = (function () {
           if (e.key === "Enter" || e.charCode === 0 || e.keyCode=== 13) {
             console.log('fired')
 
-            var value , index, i , parent;
+            var value , index, i , parent, description;
             value = input.value;
+            description = ""
             i = parseInt(input.dataset.board);
             console.log(input.dataset.board)
             if(data.panels[i].boards.length > 0) {
@@ -80,8 +82,9 @@ var MainBoardController = (function () {
             } else {
               index = 0
             }
+
             parent = document.querySelector(`[data-child="${i}"`)
-            UICards.addCard(parent, value, index)
+            UICards.addCard(parent, value, index, description)
             PanelController.addNewPanel(data, i, index,value, [])
             UIControler.addSubLinks(i, value, index)
             input.value = "";
@@ -115,7 +118,7 @@ var MainBoardController = (function () {
           } else {
             target = e.target.dataset.tasks
             target = parseInt(target)
-            TodosPanel.createTodoPanelTitle(target, val)
+            TodosPanel.createTodoPanelTitle(data,target, val)
 
           }
         }
@@ -130,7 +133,7 @@ var MainBoardController = (function () {
           var value = elem.querySelector('h5').innerHTML
           console.log(elem, target, value)
           target = parseInt(target)
-          TodosPanel.createTodoPanelTitle(target, value)
+          TodosPanel.createTodoPanelTitle(data, target, value)
 
         })
       })
@@ -142,8 +145,8 @@ var MainBoardController = (function () {
       if (boards.boards.length > 0 ){
         var parent = document.querySelector(`[data-child="${i}"]`);
         boards.boards.forEach(function (item) {
-          UICards.addCard(parent, item.boardName, item.id);
-
+          UICards.addCard(parent, item.boardName, item.id, item.description);
+          MainBoardController.handleCards(data)
         })
 
       }
@@ -159,7 +162,6 @@ var MainBoardController = (function () {
 
           })
         }
-        //UIControler.addSubLinks(board.id,item.boardName, item.id)
       })
     }
 
