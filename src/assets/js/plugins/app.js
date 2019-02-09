@@ -133,20 +133,16 @@ var UIControler = (function() {
         var boardLinks = ul.querySelector(`[data-target="${index}"]`);
         var li = boardLinks.parentNode.parentNode;
         console.log('li', typeof li)
-
         var ulSub = li.querySelector('ul')
-        console.log('ulSub', ulSub)
-
         if (ulSub == null) {
           li.insertAdjacentHTML('beforeend','<ul class="list-group list-group-flush"></ul>');
-          console.log('ulSub', ulSub)
+          ulSub = li.querySelector('ul')
         }
-        console.log('ulSub', ulSub)
 
         html= `<li class="list-group-item" data-tasks="${id}">${value}</li>`;
         ulSub.insertAdjacentHTML('beforeend', html)
-         
-        
+
+
       },
      addInputBtnEvent: function (value , index) {
         var val, blockInput, ul;
@@ -177,13 +173,17 @@ var AppController = (function(StorData, UIControler, UIBoardController, MainBoar
   if (data.panels.length === 0) {
     UIBoardController.initBoard(DOM.board, true)
     MainBoardController.handleInputAddBoard()
-    MainBoardController.handleInputAddTasks(data)
+
   }  else {
-    MainBoardController.loadContent(data)
+    MainBoardController.loadContent(data, 0)
+    MainBoardController.loadMenu(data)
     MainBoardController.handleInputAddTasks(data)
+    MainBoardController.handleMenu(data)
+
   }
 
   return {
+
       init: function () {
           data
           console.log(data.panels.length);
