@@ -179,6 +179,7 @@ var AppController = (function(StorData, UIControler, UIBoardController, MainBoar
     MainBoardController.loadMenu(data)
     MainBoardController.handleInputAddTasks(data)
     MainBoardController.handleMenu(data)
+    MainBoardController.handleCards(data)
 
   }
 

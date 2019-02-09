@@ -60,7 +60,6 @@ var MainBoardController = (function () {
               PanelController.addGroupPanelObj(data, index, value)
               UIControler.addInputBtnEvent(value, index)
               MainBoardController.handleInputAddTasks(data)
-
               StoreController.addToStor();
             }
           })
@@ -82,10 +81,12 @@ var MainBoardController = (function () {
               index = 0
             }
             parent = document.querySelector(`[data-child="${i}"`)
-            UICards.addCard(parent, value)
+            UICards.addCard(parent, value, index)
             PanelController.addNewPanel(data, i, index,value, [])
             UIControler.addSubLinks(i, value, index)
             input.value = "";
+            MainBoardController.handleCards(data)
+
 
             //UIControler.addInputBtnEvent(value, index)
             //StoreController.addToStor();
@@ -110,6 +111,7 @@ var MainBoardController = (function () {
             PanelController.createTitlePanel(target, val)
             MainBoardController.loadContent(data,target)
             MainBoardController.handleInputAddTasks(data)
+
           } else {
             target = e.target.dataset.tasks
             target = parseInt(target)
@@ -120,6 +122,19 @@ var MainBoardController = (function () {
 
       })
     },
+    handleCards: function (data) {
+      var cardEvenListener = document.querySelectorAll('.js-list')
+      cardEvenListener.forEach(function (elem) {
+        elem.addEventListener('click', function () {
+          var target = elem.dataset.tasks
+          var value = elem.querySelector('h5').innerHTML
+          console.log(elem, target, value)
+          target = parseInt(target)
+          TodosPanel.createTodoPanelTitle(target, value)
+
+        })
+      })
+    },
     loadContent: function (data, i) {
       var boards = data.panels[`${i}`]
       PanelController.createTitlePanel(boards.id, boards.nameGroup)
@@ -127,7 +142,7 @@ var MainBoardController = (function () {
       if (boards.boards.length > 0 ){
         var parent = document.querySelector(`[data-child="${i}"]`);
         boards.boards.forEach(function (item) {
-          UICards.addCard(parent, item.boardName);
+          UICards.addCard(parent, item.boardName, item.id);
 
         })
 
