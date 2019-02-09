@@ -113,7 +113,7 @@ var MainBoardController = (function () {
           } else {
             target = e.target.dataset.tasks
             target = parseInt(target)
-            PanelController.createTitlePanel(target, val)
+            TodosPanel.createTodoPanelTitle(target, val)
 
           }
         }
