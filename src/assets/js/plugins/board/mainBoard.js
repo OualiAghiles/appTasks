@@ -106,11 +106,16 @@ var MainBoardController = (function () {
           target = e.target.dataset.target
           target = parseInt(target)
           val = e.target.innerText
-          console.log('target', target)
-          console.log('value', e.target.innerText)
-          PanelController.createTitlePanel(target, val)
-          MainBoardController.loadContent(data,target)
-          MainBoardController.handleInputAddTasks(data)
+          if (!isNaN(target)) {
+            PanelController.createTitlePanel(target, val)
+            MainBoardController.loadContent(data,target)
+            MainBoardController.handleInputAddTasks(data)
+          } else {
+            target = e.target.dataset.tasks
+            target = parseInt(target)
+            PanelController.createTitlePanel(target, val)
+
+          }
         }
 
       })
