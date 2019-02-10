@@ -22,43 +22,53 @@ var TodosPanel = (function(){
     this.arrg2 = arrg2
  }
 
+  var search = function(arr,val, findItem) {
+    i = arr.findIndex((panel) => findItem(panel.boards, val) !== -1)
+    j = findItem(arr[i].boards, val)
+    return [i, j]
+  }
 
- // public
- return {
-   createContentTodo: function (data, value, i, container) {
-     data.panels.forEach(function (curr, index, arr) {
-       curr.boards.forEach(function (elem, index2, arr2) {
-         if (elem.boardName === value && elem.id === i) {
-           container.insertAdjacentHTML('beforeend', `<div class="tasks"  data-lists="${i}"></div>`)
-           var tasks = container.querySelector('.tasks')
-           var html;
-           if (elem.description !== "") {
-             html = `<div class="alert alert-light" role="alert">
+  var findItem = function(arr, val) {
+    return arr.findIndex((item) => item.boardName === val)
+  }
+
+
+  var descripttion= function (elem) {
+    html = `<div class="alert alert-light" role="alert">
                           <h4>Description</h4>
                           <p>${elem.description}</p>
                         </div>`
+    return html;
+  }
 
-           } else {
-             html = `<div class="form-group">
+  var textareaDesc = function () {
+    html = `<div class="form-group">
                     <label for="exampleFormControlTextarea1">Ajouter une description</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                   </div>`
-           }
-           tasks.insertAdjacentHTML('beforeend', html)
-           // console.log('index',index)
-           // console.log('arr',arr)
-           // console.log('value',elem.boardName)
-           // console.log('id',elem.id)
-           // console.log('description',elem.description)
-           // console.log('index2',index2)
-           // console.log('arr2',arr2)
-           console.log({curr, index, arr, elem, index2, arr2})
-         }
+    return html;
+  }
 
+// public
+ return {
+   createContentTodo: function (data, value, i, container) {
+     var indexs = search(data.panels, value, findItem)
+     console.log(indexs)
+     var elem = data.panels[indexs[0]].boards[indexs[1]]
+     if (elem.boardName === value && elem.id === i) {
+       container.insertAdjacentHTML('beforeend', `<div class="tasks"  data-lists="${i}"></div>`)
+       var tasks = container.querySelector('.tasks')
+       var html;
+       if (elem.description !== "") {
+         html = descripttion( elem);
 
-       })
-     })
-   }, createTodoPanelTitle: function (data, index, value) {
+       } else {
+         html = textareaDesc();
+       }
+       tasks.insertAdjacentHTML('beforeend', html)
+     }
+   },
+   createTodoPanelTitle: function (data, index, value) {
     var html, i;
     i= index
     html = `<div class="contentPanel active" data-index="${index}">
