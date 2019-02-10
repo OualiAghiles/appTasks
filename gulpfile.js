@@ -108,6 +108,7 @@ return gulp.src([
   'src/assets/js/plugins/board/card.js',
   'src/assets/js/plugins/board/mainPanel.js',
   'src/assets/js/plugins/board/mainBoard.js',
+  'src/assets/js/plugins/todos/list.js',
   'src/assets/js/plugins/todos/todosBoard.js',
   'src/assets/js/plugins/app.js',
   'src/assets/js/test.js'

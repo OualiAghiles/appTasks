@@ -23,17 +23,15 @@ var TodosPanel = (function(){
  }
 
   var search = function(arr,val, findItem) {
-    i = arr.findIndex((panel) => findItem(panel.boards, val) !== -1)
-    j = findItem(arr[i].boards, val)
-    return [i, j]
+    var panelID = arr.findIndex((panel) => findItem(panel.boards, val) !== -1);
+     var boardID = findItem(arr[panelID].boards, val);
+    return [panelID, boardID];
   }
 
   var findItem = function(arr, val) {
-    return arr.findIndex((item) => item.boardName === val)
-  }
-
-
-  var descripttion= function (elem) {
+    return arr.findIndex((item) => item.boardName === val);
+  };
+  var description = function (elem) {
     html = `<div class="alert alert-light" role="alert">
                           <h4>Description</h4>
                           <p>${elem.description}</p>
@@ -60,13 +58,15 @@ var TodosPanel = (function(){
        var tasks = container.querySelector('.tasks')
        var html;
        if (elem.description !== "") {
-         html = descripttion( elem);
+         html = description(elem);
 
        } else {
          html = textareaDesc();
        }
        tasks.insertAdjacentHTML('beforeend', html)
      }
+     ListeApp.handleAddList()
+
    },
    createTodoPanelTitle: function (data, index, value) {
     var html, i;
@@ -92,6 +92,7 @@ var TodosPanel = (function(){
 *
 *
 * <div class="tasks"  data-lists="${index}">
+*
                   <div class="form-group">
                     <label for="exampleFormControlTextarea1">Ajouter une description</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
@@ -100,15 +101,6 @@ var TodosPanel = (function(){
                   <h4>Featured</h4>
                   <div class="card mb-3">
 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                      </ul>
-                  </div>
-                  <hr>
-                  <h4>Featured</h4>
-                  <div class="card border-dark">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Cras justo odio</li>
                         <li class="list-group-item">Dapibus ac facilisis in</li>
