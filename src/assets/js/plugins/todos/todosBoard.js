@@ -71,7 +71,7 @@ var TodosPanel = (function(){
    createTodoPanelTitle: function (data, index, value) {
     var html, i;
     i= index
-    html = `<div class="contentPanel active" data-index="${index}">
+    html = `<div class="contentPanel active animated fadeIn fast" data-index="${index}">
                 <h6 class="mt-3 d-flex">
                   <span class="display-3" style="flex: 1">${value}</span>
                   <button class="btn btn-small btn-success float-right addList"> <i class="fas fa-plus"></i> </button>
@@ -84,7 +84,7 @@ var TodosPanel = (function(){
     container.innerHTML = "";
     container.insertAdjacentHTML('beforeend', html);
     //var test = Array.prototype.slice.call()
-     TodosPanel.createContentTodo(data, value, i, container);
+     TodosPanel.createContentTodo(data, value, i, '.contentPanel');
   }
  }
 })()
@@ -108,3 +108,41 @@ var TodosPanel = (function(){
                       </ul>
                   </div>
 * */
+
+
+var todosControl = (function() {
+
+
+  // add description
+  
+  
+
+  return{
+    handleSaveDescription: function (data) {
+      
+      var containerDesc = document.querySelector('.js-panel-description');
+      containerDesc.querySelector('button').addEventListener('click', function () {
+        var desc = containerDesc.querySelector('textarea').value 
+        containerDesc.parentNode.removeChild(containerDesc)
+        html = TodosPanel.descHTML(desc)
+        document.querySelector('.tasks').insertAdjacentHTML('beforeend', html)
+        var pan = document.querySelector('[data-index]')
+        //var i = pan.dataset.index
+        var val = pan.querySelector('h6 span').innerHTML
+        console.log(document.querySelector('[data-index]'))
+        data.panels.forEach(function (curr, index, arr) {
+          curr.boards.forEach(function (elem, index2, arr2) {
+            if (elem.boardName === val) {
+             elem.description = desc
+            }
+      
+      
+          })
+        })
+        StoreController.addToStor()
+      })
+    },
+
+  }
+  	
+})();
