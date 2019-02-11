@@ -22,46 +22,52 @@ var TodosPanel = (function(){
     this.arrg2 = arrg2
  }
 
-  var search = function(arr,val, findItem) {
+  
+
+// public
+ return {
+  search: function(arr,val, findItem) {
     var panelID = arr.findIndex((panel) => findItem(panel.boards, val) !== -1);
      var boardID = findItem(arr[panelID].boards, val);
     return [panelID, boardID];
-  }
+  },
 
-  var findItem = function(arr, val) {
+  findItem : function(arr, val) {
     return arr.findIndex((item) => item.boardName === val);
-  };
-  var description = function (elem) {
+  },
+   description : function (elem) {
     html = `<div class="alert alert-light" role="alert">
                           <h4>Description</h4>
                           <p>${elem.description}</p>
                         </div>`
     return html;
-  }
+  },
 
-  var textareaDesc = function () {
-    html = `<div class="form-group">
-                    <label for="exampleFormControlTextarea1">Ajouter une description</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                  </div>`
-    return html;
-  }
-
-// public
- return {
+  descInput: function () {
+    var html =  `<div class="js-panel-description">
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Ajouter une description</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <button class="btn btn-outline-primary btn-sm float-right">Save</button>
+    </div>
+  `
+    return  html
+   },
    createContentTodo: function (data, value, i, container) {
-     var indexs = search(data.panels, value, findItem)
+     var indexs = TodosPanel.search(data.panels, value, TodosPanel.findItem)
      console.log(indexs)
      var elem = data.panels[indexs[0]].boards[indexs[1]]
      if (elem.boardName === value && elem.id === i) {
+       
        container.insertAdjacentHTML('beforeend', `<div class="tasks"  data-lists="${i}"></div>`)
        var tasks = container.querySelector('.tasks')
        var html;
        if (elem.description !== "") {
-         html = description(elem);
+         html = TodosPanel.description(elem);
 
        } else {
-         html = textareaDesc();
+         html = TodosPanel.descInput();
        }
        tasks.insertAdjacentHTML('beforeend', html)
      }
@@ -84,7 +90,8 @@ var TodosPanel = (function(){
     container.innerHTML = "";
     container.insertAdjacentHTML('beforeend', html);
     //var test = Array.prototype.slice.call()
-     TodosPanel.createContentTodo(data, value, i, '.contentPanel');
+     TodosPanel.createContentTodo(data, value, i, container.querySelector('.contentPanel'));
+     todosControl.handleSaveDescription(data)
   }
  }
 })()
@@ -123,22 +130,23 @@ var todosControl = (function() {
       var containerDesc = document.querySelector('.js-panel-description');
       containerDesc.querySelector('button').addEventListener('click', function () {
         var desc = containerDesc.querySelector('textarea').value 
+        console.log(desc)
         containerDesc.parentNode.removeChild(containerDesc)
-        html = TodosPanel.descHTML(desc)
-        document.querySelector('.tasks').insertAdjacentHTML('beforeend', html)
+        //html = TodosPanel.description(desc)
         var pan = document.querySelector('[data-index]')
         //var i = pan.dataset.index
         var val = pan.querySelector('h6 span').innerHTML
         console.log(document.querySelector('[data-index]'))
-        data.panels.forEach(function (curr, index, arr) {
-          curr.boards.forEach(function (elem, index2, arr2) {
-            if (elem.boardName === val) {
-             elem.description = desc
-            }
-      
-      
-          })
-        })
+        var indexs = TodosPanel.search(data.panels, val, TodosPanel.findItem)
+        var elem = data.panels[indexs[0]].boards[indexs[1]]
+        console.log(elem.description)
+        if (elem.boardName === val) {
+          elem.description = desc
+          var html = TodosPanel.description(elem)
+          document.querySelector('.tasks').insertAdjacentHTML('beforeend', html)
+
+          
+         }
         StoreController.addToStor()
       })
     },
@@ -146,3 +154,5 @@ var todosControl = (function() {
   }
   	
 })();
+
+
