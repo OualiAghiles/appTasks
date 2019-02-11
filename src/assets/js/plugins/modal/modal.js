@@ -29,8 +29,8 @@ var UIModal = (function () {
                             </div>
                             <div class="col-4">
                             <h6>Ajouter a la carte</h6>
-                            <div class="list-group">
-                                <li class="list-group-item list-group-item-action" style="position: relative">
+                            <div class="list-group ">
+                                <li class="list-group-item list-group-item-action actions-card" style="position: relative">
                                 Label
                                 <div class="card cardDropDown bg-light mb-3 shadow-lg" style="position: absolute; z-index: 1090;top:47px;right:0">
                                   <ul class="list-group list-group-flush">
@@ -46,8 +46,8 @@ var UIModal = (function () {
                                   </ul>
                               </div>
                                 </li>
-                                <li class="list-group-item list-group-item-action">Add todos</li>
-                                <li  class="list-group-item list-group-item-action">date limit</li>
+                                <li class="list-group-item list-group-item-action actions-card">Add todos</li>
+                                <li  class="list-group-item list-group-item-action actions-card">date limit</li>
                               </div>
                             </div>
                           </div>
@@ -67,7 +67,7 @@ var UIModal = (function () {
 })();
 
 
-var ModalController = (function (UIModal) {
+var ModalController = (function () {
 
   return {
     createModal: function () {
@@ -81,10 +81,11 @@ var ModalController = (function (UIModal) {
 
         document.querySelector('.modal').style.background= "rgba(0,0,0,0.65)";
         document.querySelector('.modal').classList.toggle('show')
+        DropDownController.cardActions()
 
         //
       })
     }
   }
-})(UIModal);
+})();
 ModalController.createModal()
