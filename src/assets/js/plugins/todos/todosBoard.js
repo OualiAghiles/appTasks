@@ -22,7 +22,7 @@ var TodosPanel = (function(){
     this.arrg2 = arrg2
  }
 
-  
+
 
 // public
  return {
@@ -59,7 +59,7 @@ var TodosPanel = (function(){
      console.log(indexs)
      var elem = data.panels[indexs[0]].boards[indexs[1]]
      if (elem.boardName === value && elem.id === i) {
-       
+
        container.insertAdjacentHTML('beforeend', `<div class="tasks"  data-lists="${i}"></div>`)
        var tasks = container.querySelector('.tasks')
        var html;
@@ -121,15 +121,15 @@ var todosControl = (function() {
 
 
   // add description
-  
-  
+
+
 
   return{
     handleSaveDescription: function (data) {
-      
+
       var containerDesc = document.querySelector('.js-panel-description');
       containerDesc.querySelector('button').addEventListener('click', function () {
-        var desc = containerDesc.querySelector('textarea').value 
+        var desc = containerDesc.querySelector('textarea').value
         console.log(desc)
         containerDesc.parentNode.removeChild(containerDesc)
         //html = TodosPanel.description(desc)
@@ -145,14 +145,14 @@ var todosControl = (function() {
           var html = TodosPanel.description(elem)
           document.querySelector('.tasks').insertAdjacentHTML('beforeend', html)
 
-          
+
          }
         StoreController.addToStor()
       })
     },
 
   }
-  	
+
 })();
 
 

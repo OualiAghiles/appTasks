@@ -110,8 +110,8 @@ return gulp.src([
   'src/assets/js/plugins/board/mainBoard.js',
   'src/assets/js/plugins/todos/list.js',
   'src/assets/js/plugins/todos/todosBoard.js',
-  'src/assets/js/plugins/modal/dropdown.js',
-  'src/assets/js/plugins/modal/modal.js',
+  //'src/assets/js/plugins/modal/dropdown.js',
+  //'src/assets/js/plugins/modal/modal.js',
   'src/assets/js/plugins/app.js',
   'src/assets/js/test.js'
 ])

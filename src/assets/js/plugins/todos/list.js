@@ -41,29 +41,29 @@ var ListeApp = (function () {
   }
   var createListCard = function (value) {
     html = `<hr>
-                  <h4>${value}
+                  
+                  <div class="card mb-3 p-0">
+                  <div class="card-body p-0">
+                  <h4 class="card-title p-2">${value}
                     <span>
                     <i class="fas fa-plus"></i>
 </span>
                   </h4>
-                  <div class="card mb-3">
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item"><div class="form-group">
                         <input class="form-control form-control-lg addTod" type="text" placeholder="Add Todo">
                     </div></li>
                       </ul>
+</div>
                   </div>`
     return html
   };
   var createTodo = function (value) {
-    var html = `<li class="list-group-item">
-                    <span>${value}</span>
-                    <span>
-                    <i class="fas fa-check"></i>
-                    <i class="fas fa-edit"></i>
-                    <i class="fas fa-trash"></i>
-</span>
-                    </li>`;
+    var html = `<div class="card mb-3">
+                  <div class="card-body p-2">
+                    <h3 class="card-title">${value}</h3>
+                  </div>
+                </div>`;
     return html
   };
   var inputAddTodo = function () {
@@ -86,11 +86,15 @@ var ListeApp = (function () {
         var val = tasks.querySelector('.addListName').value
         var blockAddList = tasks.querySelector('.addListCard')
         blockAddList.parentNode.removeChild(blockAddList)
-        tasks.insertAdjacentHTML('beforeend',createListCard(val))
+        var deck = document.createElement('div')
+        deck.classList.add('card-deck')
+        tasks.appendChild(deck)
+        var cardDeck = tasks.querySelector('.card-deck')
+        cardDeck.insertAdjacentHTML('beforeend',createListCard(val))
         inputAddTodo()
       })
 
-  }
+  };
 
   // public
   return {
