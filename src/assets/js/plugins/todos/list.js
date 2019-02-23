@@ -48,7 +48,7 @@ var ListeApp = (function () {
                     <span>
                     <i class="fas fa-plus"></i>
 </span>
-                  </h4>
+                  </h4><hr>
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item"><div class="form-group">
                         <input class="form-control form-control-lg addTod" type="text" placeholder="Add Todo">
